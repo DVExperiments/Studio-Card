@@ -129,20 +129,58 @@
     @media(max-width:1100px){.shell{padding:33px 25px 65px}.top-wrap{padding:13px 25px}.workspace{grid-template-columns:minmax(0,1.05fr) minmax(335px,.95fr);gap:16px}.editor-body{padding:24px 20px}.editor-header{padding:23px 20px}.editor-foot{padding:20px}.preview-panel{padding:17px}.canvas-wrap{padding:10px}}
     @media(max-width:850px){.workspace{grid-template-columns:1fr}.preview-panel{position:static;max-width:680px;width:100%;margin:0 auto}.intro{margin-bottom:26px}.editor{max-width:760px;width:100%;margin:auto}.logo-divider,.product-name{display:none}.brand-logo{width:155px}.top-wrap{min-height:68px}.shell{padding-top:32px}}
     @media(max-width:480px){.export-secondary{grid-template-columns:1fr}.journey{gap:7px;font-size:11px}.journey span:not(:nth-child(even)),.journey strong{padding:7px 8px}.top-wrap{padding:12px 17px}.top-right{font-size:11px}.shell{padding:26px 14px 56px}.intro p{font-size:14px}.editor-header{padding:21px 17px}.editor-body{padding:23px 17px}.editor-foot{padding:20px 17px}.field-grid,.activity-grid{grid-template-columns:1fr}.field.wide{grid-column:auto}.reflection{grid-template-columns:36px 1fr;gap:11px}.step-icon{width:34px;height:34px}.preview-panel{padding:15px}.canvas-wrap{padding:7px}.editor-header h2{font-size:21px}.progress-pill{padding:7px 9px}.btn-clear{margin-left:0}footer.site-foot{display:block}}
-    @media print{
-      @page{size:A4;margin:15mm 16mm}
-      body{background:white!important;color:#1c221b!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-      .site-top,.shell,.toast{display:none!important}#printSheet{display:block!important;font-family:Arial,Helvetica,sans-serif;font-size:10.5pt;line-height:1.5}
-      .print-head{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #242a24;padding-bottom:13px;margin-bottom:15px}
-      .print-logo{max-width:145px;height:auto}.print-kicker{font-size:9pt;letter-spacing:.14em;text-transform:uppercase;font-weight:bold;color:#596658}
-      .print-title{font-size:26pt;margin:0 0 6px;letter-spacing:-.035em}.print-sub{color:#4a5a49;margin:0 0 17px}
-      .print-meta{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 15px;padding:12px 15px;background:#f0f3ed;border-radius:7px;margin-bottom:17px}
-      .print-meta p{margin:0;overflow-wrap:anywhere}.print-label{font-size:8.4pt;font-weight:bold;text-transform:uppercase;letter-spacing:.07em;color:#677365}
-      .print-section{margin:0 0 13px;padding:0 0 10px;border-bottom:1px solid #e1e7dc;break-inside:avoid;page-break-inside:avoid}
-      .print-section h2{font-size:12pt;margin:0 0 5px}.print-section p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
-      .print-evidence{break-inside:avoid;page-break-inside:avoid}.print-evidence img{max-width:100%;max-height:110mm;object-fit:contain;border:1px solid #e1e7dc;margin-top:8px}
-      .print-portfolio{font-size:9pt;padding:12px 14px;background:#eef4db;border-radius:8px;margin-top:15px;color:#344131;break-inside:avoid}
-      #printSheet a{color:#285981;text-decoration:underline;overflow-wrap:anywhere}
+    /* Searchable, selectable-text PDF that mirrors the visual PNG Studio Card. */
+    @media print {
+      /* Edge-to-edge PDF removes browser URL/date header and footer on Chromium. */
+      @page { size: A4 portrait; margin: 0; }
+      html,body{margin:0!important;padding:0!important;width:210mm!important;background:#fbfaf7!important;color:#191b19!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+      .site-top,.shell,.toast{display:none!important}
+      #printSheet{display:block!important;width:210mm;min-height:297mm;margin:0;padding:10.5mm 12.7mm 10mm;background:#fbfaf7;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:11px;line-height:1.38;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;box-sizing:border-box}
+      #printSheet *{box-sizing:border-box;min-width:0}
+      .print-brandbar{display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid #d8ded4;padding-bottom:12px;margin:0 0 22px;break-inside:avoid}
+      .print-brand-left{display:flex;align-items:flex-start;gap:11px}
+      .print-mark{display:block;width:13px;height:13px;flex:none;background:#171a17;border-radius:4px;position:relative;margin-top:3px}
+      .print-mark:after{content:"";position:absolute;left:5px;top:5px;width:4px;height:4px;border-radius:1px;background:#e5f48a}
+      .print-kicker{font-size:11.3px;font-weight:800;letter-spacing:.16em;color:#252c26;line-height:1.35}
+      .print-kicker-sub{font-size:7.2px;font-weight:700;color:#747d73;letter-spacing:.18em;margin-top:4px}
+      .print-logo{width:159px;max-height:50px;object-fit:contain;height:auto;display:block}
+      .print-title-block{margin:0 0 20px;break-inside:avoid}
+      .print-eyebrow{font-size:9px;color:#626b60;letter-spacing:.14em;font-weight:800;margin:0 0 7px}
+      #printSheet h1.print-title{font-size:49px;letter-spacing:-.055em;line-height:1.04;font-weight:800;margin:0 0 7px;max-width:none}
+      .print-sub{font-size:13.5px;color:#586357;margin:0}
+      .print-meta{padding:14px 15px 12px;background:#f0f2eb;border:1px solid #e5e9df;border-radius:11px;margin:0 0 10px;break-inside:avoid}
+      .print-meta-main{display:grid;grid-template-columns:1fr 1.44fr .60fr;gap:0;padding-bottom:11px;margin-bottom:9px;border-bottom:1px solid #d8dfd3}
+      .print-meta-cell{padding:0 12px;overflow-wrap:anywhere}
+      .print-meta-cell:first-child{padding-left:0}
+      .print-meta-cell+.print-meta-cell{border-left:1px solid #d7ded4}
+      .print-meta-cell:last-child{padding-right:0}
+      .print-label{font-size:8px;font-weight:800;letter-spacing:.07em;color:#6d786d;margin-bottom:5px;text-transform:uppercase}
+      .print-value{font-size:12.2px;font-weight:750;color:#242a24;line-height:1.26;overflow-wrap:anywhere}
+      .print-tools{display:flex;gap:12px;align-items:baseline}
+      .print-tools .print-label{flex:none;margin:0}
+      .print-tools .print-value{font-size:10px;color:#556157;font-weight:500}
+      .print-activities{padding:12px 15px 13px;background:#f2f5ec;border:1px solid #e2e9dc;border-radius:11px;margin:0 0 13px;break-inside:avoid}
+      .print-small-label{font-size:8.3px;font-weight:800;color:#69766b;letter-spacing:.065em;margin-bottom:8px}
+      .print-chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+      .print-chip{display:inline-block;padding:6px 9px;border-radius:7px;color:#2a322b;font-size:9.5px;line-height:1.25;font-weight:760;white-space:normal}
+      .print-empty{font-style:italic;color:#819083;font-size:10px}
+      .print-reflections{display:block}
+      .print-section{display:grid;grid-template-columns:46px minmax(0,1fr);gap:14px;min-height:87px;margin:0 0 9px;padding:14px 16px 13px;background:#ffffff;border:1px solid #e1e7dd;border-radius:13px;break-inside:avoid;page-break-inside:avoid}
+      .print-number{display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:10px;font-size:18px;font-weight:800;color:#252c25;flex:none}
+      #printSheet .print-section h2{margin:0 0 3px;font-size:12px;line-height:1.32;letter-spacing:.055em;font-weight:800;color:#232a24}
+      .print-hint{font-size:9.6px;line-height:1.4;color:#747e73;padding:0 0 8px;margin:0 0 8px;border-bottom:1px solid #e8ece6}
+      .print-answer{font-size:12.7px;line-height:1.42;color:#2d362e;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal}
+      .print-answer.empty{font-style:italic;color:#a0a99f}
+      .print-evidence{display:block;padding:13px 15px;background:#f2f6ed;border:1px solid #dfe8d9;border-radius:12px;margin:11px 0 13px;break-inside:avoid;page-break-inside:avoid}
+      #printSheet .print-evidence h2{font-size:11px;color:#365138;letter-spacing:.05em;margin:0 0 8px}
+      .print-evidence p{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.48;font-size:11.5px;margin:0 0 5px}
+      .print-evidence img{display:block;max-width:100%;max-height:83mm;object-fit:contain;margin:9px auto 0;border:1px solid #d9e1d4;background:#fff}
+      #printSheet a{color:#315b80;text-decoration:underline;overflow-wrap:anywhere}
+      .print-footer{margin-top:12px;padding-top:12px;border-top:1px solid #d8ded4;display:flex;justify-content:space-between;align-items:flex-start;gap:15px;break-inside:avoid;page-break-inside:avoid}
+      .print-foot-main{flex:1}
+      .print-foot-path{font-size:8px;letter-spacing:.12em;font-weight:800;color:#4e5b4d;line-height:1.4}
+      .print-foot-tip{font-size:9.5px;color:#667262;margin-top:5px;max-width:525px}
+      .print-foot-brand{font-size:8px;letter-spacing:.09em;color:#7c867a;font-weight:800;white-space:nowrap;margin-top:1px}
     }
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
   </style>
@@ -219,7 +257,7 @@
       <div class="canvas-wrap"><canvas id="cardCanvas" width="1200" height="1750" role="img" aria-label="Preview of your PlayLab Studio Card">Your browser does not support the card preview. Please use an up-to-date browser.</canvas></div>
       <div class="preview-actions">
         <button type="button" class="btn btn-dark btn-download" id="downloadPng"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 16v4h16v-4"/></svg> Download PNG card</button>
-        <div class="export-secondary"><button type="button" class="btn" id="downloadPdf" title="Open a print-ready version with searchable text">Save as PDF</button><button type="button" class="btn" id="downloadMd" title="Download editable searchable text for your Digital Portfolio">Download text (.md)</button></div>
+        <div class="export-secondary"><button type="button" class="btn" id="downloadPdf" title="Print the colour Studio Card as a PDF with searchable text">Save as PDF</button><button type="button" class="btn" id="downloadMd" title="Download editable searchable text for your Digital Portfolio">Download text (.md)</button></div>
       </div>
       <div class="preview-meta"><span>PNG image · PDF searchable · Markdown editable</span><span id="canvasSize">Preview: 1200 px wide</span></div>
       <div class="tip"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/></svg><span><strong>Digital Portfolio:</strong> Add your card as evidence of an experiment, iteration or shift in thinking. PNG preserves the visual card; PDF and Markdown keep the reflection text searchable and reusable.</span></div>
@@ -634,35 +672,79 @@
   }
   function printElement(tag,cls,txt,parent){const el=document.createElement(tag);if(cls)el.className=cls;if(txt!=null)el.textContent=txt;(parent||$('printSheet')).appendChild(el);return el;}
   function buildPrintSheet(){
+    // Build an accessible HTML twin of the canvas card so PDF text stays searchable.
     const sheet=$('printSheet');sheet.replaceChildren();
-    const header=printElement('header','print-head','',sheet);
-    const brand=printElement('div','print-kicker','FUTURES PLAYLAB\nLEARNING THROUGH MAKING',header);brand.style.whiteSpace='pre-line';
+    const header=printElement('header','print-brandbar',null,sheet);
+    const brand=printElement('div','print-brand-left',null,header);
+    printElement('span','print-mark',null,brand).setAttribute('aria-hidden','true');
+    const brandWords=printElement('div',null,null,brand);
+    printElement('div','print-kicker','FUTURES PLAYLAB',brandWords);
+    printElement('div','print-kicker-sub','LEARNING THROUGH MAKING',brandWords);
     const img=printElement('img','print-logo',null,header);img.src=LOGO_SRC;img.alt='academyEX';
-    printElement('h1','print-title','Studio Card',sheet);
-    printElement('p','print-sub','How did making and testing change your thinking?',sheet);
-    const meta=printElement('div','print-meta','',sheet);
-    for(const [label,val] of [['Student',state.student||'Not specified'],['Date',formatDate(state.date)],['Project / focus',state.activity||'A PlayLab exploration'],['Tools / materials',state.tools||'—']]){
-      const p=printElement('p',null,null,meta);printElement('span','print-label',label+': ',p);p.appendChild(document.createTextNode(val));
+
+    const titleBlock=printElement('div','print-title-block',null,sheet);
+    printElement('p','print-eyebrow','AN EXPERIMENTATION & REFLECTION RECORD',titleBlock);
+    printElement('h1','print-title','Studio Card',titleBlock);
+    printElement('p','print-sub','How did making and testing change your thinking?',titleBlock);
+
+    const meta=printElement('div','print-meta',null,sheet);
+    const metaMain=printElement('div','print-meta-main',null,meta);
+    for(const [label,val] of [
+      ['Student',state.student.trim()||'Not specified'],
+      ['Project / focus',state.activity.trim()||'A PlayLab exploration'],
+      ['Date',formatDate(state.date)]
+    ]){
+      const cell=printElement('div','print-meta-cell',null,metaMain);
+      printElement('div','print-label',label,cell);
+      printElement('div','print-value',val,cell);
     }
-    const a=ACTIVITIES.filter(a=>state.selectedActivities.includes(a.id));
-    const section=printElement('section','print-section','',sheet);printElement('h2',null,'Studio activities',section);printElement('p',null,a.length?a.map(x=>`${x.tag}: ${x.name}`).join(' · '):'No activity selected',section);
-    SECTIONS.forEach(s=>{const sec=printElement('section','print-section','',sheet);printElement('h2',null,s.title,sec);printElement('p',null,state[s.key].trim()||'—',sec);});
+    const tools=printElement('div','print-tools',null,meta);
+    printElement('span','print-label','TOOLS / MATERIALS',tools);
+    printElement('span','print-value',state.tools.trim()||'—',tools);
+
+    const activities=printElement('section','print-activities',null,sheet);
+    printElement('div','print-small-label','TODAY’S STUDIO ACTIVITIES',activities);
+    const chips=printElement('div','print-chips',null,activities);
+    const chosen=ACTIVITIES.filter(a=>state.selectedActivities.includes(a.id));
+    if(chosen.length){
+      for(const a of chosen){
+        const chip=printElement('span','print-chip',a.chip,chips);
+        chip.style.backgroundColor=a.colour;
+      }
+    } else printElement('span','print-empty','Select the activity or activities you joined',chips);
+
+    const reflections=printElement('div','print-reflections',null,sheet);
+    SECTIONS.forEach((s,i)=>{
+      const sec=printElement('section','print-section',null,reflections);
+      const number=printElement('span','print-number',String(i+1).padStart(2,'0'),sec);
+      number.style.backgroundColor=s.colour;
+      const inner=printElement('div','print-reflection-content',null,sec);
+      printElement('h2',null,s.title,inner);
+      printElement('p','print-hint',s.hint,inner);
+      const answer=printElement('p','print-answer',state[s.key].trim()||s.placeholder,inner);
+      if(!state[s.key].trim())answer.classList.add('empty');
+    });
     if(state.evidence.trim()||state.evidenceUrl.trim()||state.evidenceImage){
-      const sec=printElement('section','print-section print-evidence','',sheet);printElement('h2',null,'Evidence / artefact (optional)',sec);
+      const sec=printElement('section','print-evidence',null,sheet);
+      printElement('h2',null,'OPTIONAL EVIDENCE / ARTEFACT',sec);
       if(state.evidence.trim())printElement('p',null,state.evidence.trim(),sec);
       if(state.evidenceUrl.trim()){
-        const p=printElement('p',null,'',sec),safeUrl=normalUrl(state.evidenceUrl);
+        const p=printElement('p',null,null,sec),safeUrl=normalUrl(state.evidenceUrl);
         if(safeUrl){const link=printElement('a',null,state.evidenceUrl.trim(),p);link.href=safeUrl;}
         else p.textContent=state.evidenceUrl.trim();
       }
-      if(state.evidenceImage){const i=printElement('img',null,null,sec);i.src=state.evidenceImage;i.alt='Evidence image';}
+      if(state.evidenceImage){const image=printElement('img',null,null,sec);image.src=state.evidenceImage;image.alt='Evidence image';}
     }
-    printElement('div','print-portfolio','Digital Portfolio · Save this card as evidence of an experiment, an iteration or a shift in thinking.',sheet);
+    const footer=printElement('footer','print-footer',null,sheet);
+    const footMain=printElement('div','print-foot-main',null,footer);
+    printElement('div','print-foot-path','STUDIO ACTIVITY  →  REFLECTION  →  VISIBLE EVIDENCE',footMain);
+    printElement('div','print-foot-tip','Add this card to your Digital Portfolio as evidence of an experiment, iteration or shift in thinking.',footMain);
+    printElement('div','print-foot-brand','PLAYLAB  /  ACADEMYEX',footer);
   }
   function normalUrl(s){try{const u=new URL(s.trim());return ['https:','http:'].includes(u.protocol)?u.href:null;}catch{return null;}}
   $('downloadMd').addEventListener('click',exportMarkdown);
   $('downloadPdf').addEventListener('click',()=>{
-    buildPrintSheet();notify('In the print dialog, select “Save as PDF”. The text will remain searchable.');
+    buildPrintSheet();notify('Select “Save as PDF” in the print dialog. The card keeps its colours and selectable text.');
     window.print();
   });
   $('clearForm').addEventListener('click',()=>{
