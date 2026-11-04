@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#171916">
-  <meta name="description" content="Create a PlayLab Studio Card to capture what you explored, tested, discovered and want to try next. Export a beautiful PNG, directly from your browser.">
+  <meta name="description" content="Create a PlayLab Studio Card to capture what you explored, tested, discovered and want to try next. Export your Studio Card as a PNG, searchable PDF or editable text—directly from your browser.">
   <title>PlayLab Studio Card | academyEX</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23171916'/%3E%3Cpath d='M13 13h38v11H24v27H13z' fill='%23e5f48a'/%3E%3Ccircle cx='42' cy='42' r='10' fill='white'/%3E%3C/svg%3E">
   <style>
@@ -47,6 +47,21 @@
     .editor-body{padding:30px 31px 32px}
     .small-title{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;display:flex;align-items:center;gap:11px;margin:0 0 19px;color:#465047}
     .small-title:after{content:"";height:1px;background:#e6e9e2;flex:1}
+    .activity-overview{margin:0 0 24px;color:#677167;font-size:13px;line-height:1.65}
+    .activity-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .activity-choice{display:flex;gap:12px;align-items:flex-start;position:relative;border:1.5px solid #dce2d8;border-radius:12px;padding:14px 13px;background:#fcfdfb;cursor:pointer;transition:background .15s,border-color .15s,box-shadow .15s}
+    .activity-choice:hover{border-color:#b0c69c;background:#f7faf3}
+    .activity-choice:has(input:checked){border-color:#678c54;background:#f0f6e9;box-shadow:inset 0 0 0 1px #9fbb89}
+    .activity-choice:has(input:focus-visible){outline:3px solid #8bb6fd;outline-offset:3px}
+    .activity-choice input{width:17px;height:17px;flex:none;margin:3px 0 0;accent-color:#496b3a}
+    .activity-copy{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .activity-category{font-size:10px;font-weight:850;letter-spacing:.11em;text-transform:uppercase;color:#546453}
+    .activity-category.explore{color:#6a5a84}
+    .activity-name{font-size:13px;font-weight:790;line-height:1.4;letter-spacing:-.015em;color:#202821}
+    .activity-desc{font-size:11.5px;line-height:1.55;color:#667166}
+    .activity-guide{background:#f4f7ee;border:1px solid #dfebd2;border-radius:12px;padding:14px 17px;margin-top:15px}
+    .activity-guide strong{display:block;font-size:12px;color:#30442d;margin-bottom:4px}
+    .activity-guide p{font-size:12px;line-height:1.6;color:#556451;margin:0}
     .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     .field{min-width:0}
     .field.wide{grid-column:1/-1}
@@ -90,7 +105,20 @@
     .canvas-wrap{position:relative;background:#e1e5de;border:1px solid #dce1d9;border-radius:13px;padding:16px;overflow:hidden;display:flex;justify-content:center;align-items:flex-start;
       background-image:radial-gradient(#c9cfc6 .9px,transparent .9px);background-size:19px 19px}
     canvas{display:block;width:100%;height:auto;box-shadow:0 17px 45px rgba(27,35,27,.14),0 2px 5px rgba(27,35,27,.08);background:#fbfaf7}
-    .preview-actions{display:grid;grid-template-columns:1fr;gap:9px;margin-top:17px}
+    .preview-actions{display:grid;grid-template-columns:1fr;gap:10px;margin-top:17px}
+    .export-secondary{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+    .export-secondary .btn{width:100%;font-size:12px}
+    .journey{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin:-9px 0 28px;color:#546350;font-size:12px;font-weight:700}
+    .journey span:not(:nth-child(even)),.journey strong{padding:9px 13px;border:1px solid #dbe2d5;border-radius:999px;background:#fff}
+    .journey strong{background:var(--lime);border-color:var(--lime);color:#2c3327}
+    .journey span:nth-child(even){color:#8e988c}
+    .evidence-fields{margin-bottom:0}.image-picker{border:1px dashed #b9c7b2;border-radius:12px;padding:14px 15px;background:#f9fbf6}
+    .image-picker input{font-size:12px;max-width:100%;height:auto;width:100%;border:0;background:none;padding:0;color:#4b5649}
+    .image-picker input::file-selector-button{border:1px solid #cad6c3;border-radius:8px;background:white;color:#263224;padding:9px 12px;margin-right:10px;font-weight:700;cursor:pointer}
+    .image-picker-status{display:flex;gap:11px;align-items:center;flex-wrap:wrap;margin-top:11px;font-size:12px;color:#637060}
+    .evidence-thumb{width:74px;height:60px;object-fit:cover;border-radius:8px;border:1px solid #d3dad0}.evidence-thumb[hidden],.btn-remove[hidden]{display:none}
+    .btn-remove{min-height:32px;padding:7px 10px;font-size:11px;margin-left:auto}.field-help{font-size:11px;color:#748074;line-height:1.6;margin:9px 0 0}
+    #printSheet{display:none}
     .btn-download{font-size:15px;padding:15px;min-height:52px}
     .preview-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;color:#757f76;font-size:11px}
     .tip{display:flex;align-items:flex-start;gap:11px;border-top:1px solid #d9dfd5;margin-top:20px;padding-top:17px;font-size:12px;color:#606b61;line-height:1.7}
@@ -100,7 +128,22 @@
     footer.site-foot{margin-top:34px;color:#6e786e;font-size:12px;display:flex;justify-content:space-between;gap:14px;border-top:1px solid #dce1d9;padding-top:21px;line-height:1.65}
     @media(max-width:1100px){.shell{padding:33px 25px 65px}.top-wrap{padding:13px 25px}.workspace{grid-template-columns:minmax(0,1.05fr) minmax(335px,.95fr);gap:16px}.editor-body{padding:24px 20px}.editor-header{padding:23px 20px}.editor-foot{padding:20px}.preview-panel{padding:17px}.canvas-wrap{padding:10px}}
     @media(max-width:850px){.workspace{grid-template-columns:1fr}.preview-panel{position:static;max-width:680px;width:100%;margin:0 auto}.intro{margin-bottom:26px}.editor{max-width:760px;width:100%;margin:auto}.logo-divider,.product-name{display:none}.brand-logo{width:155px}.top-wrap{min-height:68px}.shell{padding-top:32px}}
-    @media(max-width:480px){.top-wrap{padding:12px 17px}.top-right{font-size:11px}.shell{padding:26px 14px 56px}.intro p{font-size:14px}.editor-header{padding:21px 17px}.editor-body{padding:23px 17px}.editor-foot{padding:20px 17px}.field-grid{grid-template-columns:1fr}.field.wide{grid-column:auto}.reflection{grid-template-columns:36px 1fr;gap:11px}.step-icon{width:34px;height:34px}.preview-panel{padding:15px}.canvas-wrap{padding:7px}.editor-header h2{font-size:21px}.progress-pill{padding:7px 9px}.btn-clear{margin-left:0}footer.site-foot{display:block}}
+    @media(max-width:480px){.export-secondary{grid-template-columns:1fr}.journey{gap:7px;font-size:11px}.journey span:not(:nth-child(even)),.journey strong{padding:7px 8px}.top-wrap{padding:12px 17px}.top-right{font-size:11px}.shell{padding:26px 14px 56px}.intro p{font-size:14px}.editor-header{padding:21px 17px}.editor-body{padding:23px 17px}.editor-foot{padding:20px 17px}.field-grid,.activity-grid{grid-template-columns:1fr}.field.wide{grid-column:auto}.reflection{grid-template-columns:36px 1fr;gap:11px}.step-icon{width:34px;height:34px}.preview-panel{padding:15px}.canvas-wrap{padding:7px}.editor-header h2{font-size:21px}.progress-pill{padding:7px 9px}.btn-clear{margin-left:0}footer.site-foot{display:block}}
+    @media print{
+      @page{size:A4;margin:15mm 16mm}
+      body{background:white!important;color:#1c221b!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      .site-top,.shell,.toast{display:none!important}#printSheet{display:block!important;font-family:Arial,Helvetica,sans-serif;font-size:10.5pt;line-height:1.5}
+      .print-head{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #242a24;padding-bottom:13px;margin-bottom:15px}
+      .print-logo{max-width:145px;height:auto}.print-kicker{font-size:9pt;letter-spacing:.14em;text-transform:uppercase;font-weight:bold;color:#596658}
+      .print-title{font-size:26pt;margin:0 0 6px;letter-spacing:-.035em}.print-sub{color:#4a5a49;margin:0 0 17px}
+      .print-meta{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 15px;padding:12px 15px;background:#f0f3ed;border-radius:7px;margin-bottom:17px}
+      .print-meta p{margin:0;overflow-wrap:anywhere}.print-label{font-size:8.4pt;font-weight:bold;text-transform:uppercase;letter-spacing:.07em;color:#677365}
+      .print-section{margin:0 0 13px;padding:0 0 10px;border-bottom:1px solid #e1e7dc;break-inside:avoid;page-break-inside:avoid}
+      .print-section h2{font-size:12pt;margin:0 0 5px}.print-section p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+      .print-evidence{break-inside:avoid;page-break-inside:avoid}.print-evidence img{max-width:100%;max-height:110mm;object-fit:contain;border:1px solid #e1e7dc;margin-top:8px}
+      .print-portfolio{font-size:9pt;padding:12px 14px;background:#eef4db;border-radius:8px;margin-top:15px;color:#344131;break-inside:avoid}
+      #printSheet a{color:#285981;text-decoration:underline;overflow-wrap:anywhere}
+    }
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
   </style>
 </head>
@@ -113,28 +156,52 @@
   <section class="intro" aria-labelledby="pageTitle">
     <div class="eyebrow"><span class="dash" aria-hidden="true"></span>EXPLORE · MAKE · REFLECT</div>
     <h1 id="pageTitle">Make your learning <span class="highlight">visible.</span></h1>
-    <p>Every experiment tells a story. Capture what you explored, what you made or tested, what surprised you, what changed, and where you’ll go next. Your Studio Card updates as you write and can be exported as a shareable PNG.</p>
+    <p>Complete <strong>one Studio Card</strong> to show how your thinking changed through making, testing and reflection. Capture a moment of learning from your MAKE or EXPLORE activities, then take it into your Digital Portfolio.</p>
   </section>
+  <div class="journey" aria-label="Studio Card process"><span>Studio activity</span><span aria-hidden="true">→</span><span>Reflection</span><span aria-hidden="true">→</span><span>Visible evidence</span><span aria-hidden="true">→</span><strong>Digital Portfolio</strong></div>
   <div class="workspace">
     <section class="editor" aria-labelledby="editHeading">
       <div class="editor-header"><div><div class="section-label">Your experiment record</div><h2 id="editHeading">Build your Studio Card</h2></div><div class="progress"><span id="progressLabel" class="progress-pill" aria-live="polite">0 / 5</span></div></div>
       <div class="progress-track" role="progressbar" id="progressTrack" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" aria-label="Completed reflections"><div class="progress-fill" id="progressFill"></div></div>
       <form id="studioForm" autocomplete="on">
         <div class="editor-body">
-          <div class="small-title">01 · About your session</div>
+          <div class="small-title">01 · Activities from today</div>
+          <p class="activity-overview">Select <strong>one or more</strong> activities you participated in. The questions below will adapt to your selection, while every student produces the same five-part Studio Card.</p>
+          <div class="activity-grid" role="group" aria-label="PlayLab activities completed">
+            <label class="activity-choice"><input type="checkbox" name="selectedActivities" value="make1"><span class="activity-copy"><span class="activity-category">MAKE 1</span><span class="activity-name">System → Intervention</span><span class="activity-desc">Map a real context or system, identify a friction point or relationship, and create a quick low-fi intervention.</span></span></label>
+            <label class="activity-choice"><input type="checkbox" name="selectedActivities" value="make2"><span class="activity-copy"><span class="activity-category">MAKE 2</span><span class="activity-name">Cybernetic / Adaptive Redesign</span><span class="activity-desc">Analyse feedback, control and system responses; adapt your intervention into V2.</span></span></label>
+            <label class="activity-choice"><input type="checkbox" name="selectedActivities" value="make3"><span class="activity-copy"><span class="activity-category">MAKE 3</span><span class="activity-name">PlayLab Google Site Challenge</span><span class="activity-desc">Redesign part of the PlayLab digital home for participation, exploration and contribution.</span></span></label>
+            <label class="activity-choice"><input type="checkbox" name="selectedActivities" value="explore1"><span class="activity-copy"><span class="activity-category explore">EXPLORE 1</span><span class="activity-name">Collective Frame VR</span><span class="activity-desc">Experience shared space through a 4E+ / enaction lens.</span></span></label>
+            <label class="activity-choice"><input type="checkbox" name="selectedActivities" value="explore2"><span class="activity-copy"><span class="activity-category explore">EXPLORE 2</span><span class="activity-name">VR Headsets</span><span class="activity-desc">Explore affordances, movement and interaction through a short embodied experience.</span></span></label>
+          </div>
+          <div class="activity-guide" aria-live="polite"><strong id="activityGuideTitle">Your reflection focus</strong><p id="activityGuideText">Choose an activity above for prompts that connect directly to what you did today.</p></div>
+          <div class="divider"></div>
+          <div class="small-title">02 · About your session</div>
           <div class="field-grid">
             <div class="field"><label for="student">Your name <span class="optional">optional</span></label><input id="student" name="student" maxlength="80" placeholder="e.g. Alex Chen" autocomplete="name"></div>
             <div class="field"><label for="date">Date</label><input id="date" name="date" type="date"></div>
-            <div class="field wide"><label for="activity">Activity or project <span class="optional">optional</span></label><input id="activity" name="activity" maxlength="100" placeholder="e.g. Prototyping a better student experience"></div>
+            <div class="field wide"><label for="activity">Your project or experiment focus <span class="optional">optional</span></label><input id="activity" name="activity" maxlength="100" placeholder="e.g. Redesigning a point of friction in student onboarding"></div>
             <div class="field wide"><label for="tools">Tools, materials or technologies <span class="optional">optional</span></label><input id="tools" name="tools" maxlength="140" placeholder="e.g. Figma, cardboard, AI, sticky notes"></div>
           </div>
           <div class="divider"></div>
-          <div class="small-title">02 · Reflect on your learning</div>
-          <div class="reflection" data-step="1"><div class="step-icon">01</div><div><h3><label for="explored">What did you explore?</label></h3><p>Describe the idea, question, technology, or possibility you investigated.</p><div class="field"><textarea id="explored" name="explored" maxlength="900" placeholder="I explored..." rows="3"></textarea></div></div></div>
-          <div class="reflection" data-step="2"><div class="step-icon">02</div><div><h3><label for="made">What did you make or test?</label></h3><p>What did you build, try, prototype, simulate, or experiment with?</p><div class="field"><textarea id="made" name="made" maxlength="900" placeholder="I made or tested..." rows="3"></textarea></div></div></div>
-          <div class="reflection" data-step="3"><div class="step-icon">03</div><div><h3><label for="surprised">What surprised you?</label></h3><p>Note an unexpected result, challenge, insight, or question.</p><div class="field"><textarea id="surprised" name="surprised" maxlength="900" placeholder="I was surprised by..." rows="3"></textarea></div></div></div>
-          <div class="reflection" data-step="4"><div class="step-icon">04</div><div><h3><label for="changed">What changed?</label></h3><p>How did your thinking, approach, assumptions, or design shift?</p><div class="field"><textarea id="changed" name="changed" maxlength="900" placeholder="I now think..." rows="3"></textarea></div></div></div>
-          <div class="reflection" data-step="5"><div class="step-icon">05</div><div><h3><label for="next">What would you do next?</label></h3><p>Identify your next experiment, iteration, improvement, or question.</p><div class="field"><textarea id="next" name="next" maxlength="900" placeholder="Next, I would..." rows="3"></textarea></div></div></div>
+          <div class="small-title">03 · Reflect on how your thinking changed</div>
+          <div class="reflection" data-step="1"><div class="step-icon">01</div><div><h3><label for="explored">What did you explore?</label></h3><p id="hint-explored">Which question, system, idea or experience did you investigate?</p><div class="field"><textarea id="explored" name="explored" maxlength="900" placeholder="I explored..." rows="3"></textarea></div></div></div>
+          <div class="reflection" data-step="2"><div class="step-icon">02</div><div><h3><label for="made">What did you make or test?</label></h3><p id="hint-made">Describe the intervention, redesign, test, or interaction you actually tried.</p><div class="field"><textarea id="made" name="made" maxlength="900" placeholder="I made or tested..." rows="3"></textarea></div></div></div>
+          <div class="reflection" data-step="3"><div class="step-icon">03</div><div><h3><label for="surprised">What surprised you or what did you notice?</label></h3><p id="hint-surprised">Describe a surprise, pattern, tension or detail that stood out.</p><div class="field"><textarea id="surprised" name="surprised" maxlength="900" placeholder="I noticed..." rows="3"></textarea></div></div></div>
+          <div class="reflection" data-step="4"><div class="step-icon">04</div><div><h3><label for="changed">What changed?</label></h3><p id="hint-changed">How did making or testing change what you thought or assumed?</p><div class="field"><textarea id="changed" name="changed" maxlength="900" placeholder="I now think..." rows="3"></textarea></div></div></div>
+          <div class="reflection" data-step="5"><div class="step-icon">05</div><div><h3><label for="next">What would you do next?</label></h3><p id="hint-next">What would you test, adapt, redesign, or explore next?</p><div class="field"><textarea id="next" name="next" maxlength="900" placeholder="Next, I would..." rows="3"></textarea></div></div></div>
+          <div class="divider"></div>
+          <div class="small-title">04 · Add evidence <span class="optional">optional</span></div>
+          <p class="activity-overview">Add a photo, screenshot, sketch, prototype link or reference to a file. This is supporting evidence, <strong>not another reflection question.</strong></p>
+          <div class="field-grid evidence-fields">
+            <div class="field wide"><label for="evidence">Artefact or evidence reference <span class="optional">optional</span></label><input id="evidence" name="evidence" maxlength="350" placeholder="e.g. Photo of our V2 prototype, sketch, saved design file"></div>
+            <div class="field wide"><label for="evidenceUrl">Prototype or file link <span class="optional">optional</span></label><input id="evidenceUrl" name="evidenceUrl" type="url" maxlength="500" placeholder="https://…" inputmode="url"></div>
+            <div class="field wide">
+              <label for="evidenceFile">Attach an image <span class="optional">optional · photo, screenshot or sketch</span></label>
+              <div class="image-picker"><input type="file" id="evidenceFile" accept="image/png,image/jpeg,image/webp,image/gif" aria-describedby="evidenceHelp"><div class="image-picker-status"><img id="evidenceThumb" class="evidence-thumb" alt="Attached evidence preview" hidden><span id="evidenceStatus">No image attached</span><button type="button" class="btn btn-remove" id="removeEvidence" hidden>Remove image</button></div></div>
+              <p class="field-help" id="evidenceHelp">Images are included in your PNG and PDF. Other artefacts can be described above or linked. Images are resized and saved with your editable draft on this device.</p>
+            </div>
+          </div>
         </div>
         <div class="editor-foot">
           <div class="button-strip">
@@ -143,27 +210,31 @@
             <button type="button" class="btn btn-clear" id="clearForm">Clear all</button>
             <input id="fileInput" type="file" accept=".json,application/json" hidden aria-label="Open saved draft JSON file">
           </div>
-          <p class="privacy-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Your work stays on this device. Drafts autosave in this browser; nothing is uploaded to a server. Use <strong>Save draft</strong> to keep an editable backup.</span></p>
+          <p class="privacy-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Your work and attached images stay on this device. Drafts autosave in this browser; nothing is uploaded to a server. Use <strong>Save draft</strong> for a portable, editable backup.</span></p>
         </div>
       </form>
     </section>
     <aside class="preview-panel" aria-labelledby="previewHeading">
-      <div class="preview-head"><div><div class="section-label">See it come together</div><h2 id="previewHeading">Live card preview</h2><small>Updates automatically as you write</small></div><span class="preview-tag">PNG READY</span></div>
+      <div class="preview-head"><div><div class="section-label">See it come together</div><h2 id="previewHeading">Live card preview</h2><small>Updates automatically as you write</small></div><span class="preview-tag">PORTFOLIO READY</span></div>
       <div class="canvas-wrap"><canvas id="cardCanvas" width="1200" height="1750" role="img" aria-label="Preview of your PlayLab Studio Card">Your browser does not support the card preview. Please use an up-to-date browser.</canvas></div>
-      <div class="preview-actions"><button type="button" class="btn btn-dark btn-download" id="downloadPng"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 16v4h16v-4"/></svg> Export card as PNG</button></div>
-      <div class="preview-meta"><span>High-resolution · 2× PNG</span><span id="canvasSize">Preview: 1200 px wide</span></div>
-      <div class="tip"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/></svg><span><strong>Studio tip:</strong> Keep your reflections specific. A useful card captures not just what worked, but what you discovered through trying. Longer answers will automatically make the card taller.</span></div>
+      <div class="preview-actions">
+        <button type="button" class="btn btn-dark btn-download" id="downloadPng"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 16v4h16v-4"/></svg> Download PNG card</button>
+        <div class="export-secondary"><button type="button" class="btn" id="downloadPdf" title="Open a print-ready version with searchable text">Save as PDF</button><button type="button" class="btn" id="downloadMd" title="Download editable searchable text for your Digital Portfolio">Download text (.md)</button></div>
+      </div>
+      <div class="preview-meta"><span>PNG image · PDF searchable · Markdown editable</span><span id="canvasSize">Preview: 1200 px wide</span></div>
+      <div class="tip"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/></svg><span><strong>Digital Portfolio:</strong> Add your card as evidence of an experiment, iteration or shift in thinking. PNG preserves the visual card; PDF and Markdown keep the reflection text searchable and reusable.</span></div>
     </aside>
   </div>
   <footer class="site-foot"><span>PlayLab Studio Card · A space for exploring, making and learning.</span><span>Made for learning. Built to share.</span></footer>
-</main>
+ </main>
+<article id="printSheet" aria-label="Printable PlayLab Studio Card"></article>
 <div role="status" aria-live="polite" id="toast" class="toast"></div>
 <script>
 'use strict';
 (() => {
   const LOGO_SRC = 'data:image/png;base64,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';
-  const KEY = 'academyex-playlab-studio-card-v1';
-  const FIELDS = ['student','date','activity','tools','explored','made','surprised','changed','next'];
+  const KEY = 'academyex-playlab-studio-card-v1'; // Preserve students’ existing local drafts.
+  const FIELDS = ['student','date','activity','tools','explored','made','surprised','changed','next','evidence','evidenceUrl'];
   const REFLECTIONS = ['explored','made','surprised','changed','next'];
   const $ = id => document.getElementById(id);
   const form = $('studioForm');
@@ -174,23 +245,116 @@
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   };
-  const initialData = () => ({student:'',date:today(),activity:'',tools:'',explored:'',made:'',surprised:'',changed:'',next:''});
+  const initialData = () => ({student:'',date:today(),activity:'',tools:'',explored:'',made:'',surprised:'',changed:'',next:'',evidence:'',evidenceUrl:'',evidenceImage:'',selectedActivities:[]});
   const state = initialData();
   const SECTIONS = [
     {key:'explored',title:'WHAT I EXPLORED',hint:'The question, idea or possibility',placeholder:'Start with the question or idea you explored.',colour:'#daede3'},
     {key:'made',title:'WHAT I MADE / TESTED',hint:'The experiment in action',placeholder:'Record what you made, tried or tested.',colour:'#e5def9'},
-    {key:'surprised',title:'WHAT SURPRISED ME',hint:'What I didn’t expect',placeholder:'What happened that you didn’t anticipate?',colour:'#ffdfcf'},
-    {key:'changed',title:'WHAT CHANGED',hint:'A shift in thinking or approach',placeholder:'Describe what changed in your understanding.',colour:'#dae8f6'},
+    {key:'surprised',title:'WHAT SURPRISED ME / WHAT I NOTICED',hint:'An observation, surprise or insight',placeholder:'What stood out or challenged your assumptions?',colour:'#ffdfcf'},
+    {key:'changed',title:'WHAT CHANGED',hint:'How my thinking or assumptions shifted',placeholder:'What do you think differently now?',colour:'#dae8f6'},
     {key:'next',title:'WHAT I’D DO NEXT',hint:'The next iteration or question',placeholder:'Identify what you would explore next.',colour:'#e5f48a'}
   ];
+  const ACTIVITIES = [
+    {id:'make1',tag:'MAKE 1',name:'System → Intervention',chip:'MAKE 1 · System → Intervention',colour:'#dbefe2',focus:'Map a real system, find a friction point or relationship, then test a low-fi intervention.',hints:[
+      'Which real-world system, relationship or friction point did you map?',
+      'What quick, low-fi intervention did you sketch, build or test?',
+      'What connection, stakeholder need or ripple effect did you notice?',
+      'How did mapping the system change your framing or proposed intervention?',
+      'How would you test the intervention in the real context?'
+    ]},
+    {id:'make2',tag:'MAKE 2',name:'Cybernetic / Adaptive Redesign',chip:'MAKE 2 · Adaptive Redesign',colour:'#e5def9',focus:'Use feedback, control and system responses to redesign your intervention as V2.',hints:[
+      'What feedback loops, controls or system responses did you analyse?',
+      'What did you change or simulate in your V2 intervention?',
+      'What system response, delay or unintended effect did you notice?',
+      'How did the feedback change your design or assumptions?',
+      'What would you monitor or adapt in a V3?'
+    ]},
+    {id:'make3',tag:'MAKE 3',name:'PlayLab Google Site Challenge',chip:'MAKE 3 · PlayLab Site Challenge',colour:'#ffdfcf',focus:'Improve the PlayLab digital home so students can participate, explore and contribute.',hints:[
+      'Which participation, exploration or contribution challenge did you investigate?',
+      'What part of the PlayLab Google Site did you redesign or prototype?',
+      'What did you notice about navigation, accessibility or student involvement?',
+      'How did your idea of a useful digital learning space change?',
+      'What would you test with other learners before publishing?'
+    ]},
+    {id:'explore1',tag:'EXPLORE 1',name:'Collective Frame VR',chip:'EXPLORE 1 · Collective Frame VR',colour:'#dae8f6',focus:'Explore a shared spatial experience through 4E+ cognition and enaction.',hints:[
+      'What did you notice about shared space, embodiment and collective sense-making?',
+      'What actions, interactions or moments did you try together in VR?',
+      'What felt different when you perceived and acted in a shared environment?',
+      'How did the experience shift your understanding of 4E+ or enaction?',
+      'How could this shared VR approach support a future learning activity?'
+    ]},
+    {id:'explore2',tag:'EXPLORE 2',name:'VR Headsets',chip:'EXPLORE 2 · VR Headsets',colour:'#e5f48a',focus:'Reflect on VR affordances, movement and interaction during a short embodied experience.',hints:[
+      'Which headset affordances, movements or interactions did you explore?',
+      'What tasks, gestures, navigation or spatial interactions did you try?',
+      'What was intuitive, disorienting, immersive or unexpectedly difficult?',
+      'How did being inside the experience change your ideas about VR?',
+      'What would you improve or test for comfort, access or learning?'
+    ]}
+  ];
+  const GENERAL_HINTS = [
+    'Which question, system, idea or experience did you investigate?',
+    'What did you make, test, redesign or interact with?',
+    'What surprised you, or what pattern, friction or possibility did you notice?',
+    'What changed in your thinking, assumptions or approach?',
+    'What would you test, adapt, redesign or explore next?'
+  ];
+  const MULTI_HINTS = [
+    'Across the activities you selected, what central idea or question did you explore?',
+    'Which interventions, redesigns or VR interactions did you actually try?',
+    'What surprised you, or what connections did you notice between activities?',
+    'What changed in how you understand systems, technology or participation?',
+    'What would you carry forward into another prototype or learning experience?'
+  ];
   const FONT = 'Arial, "Helvetica Neue", sans-serif';
+  const evidenceImg = new Image();
+  evidenceImg.onload=()=>updateDisplay();
+  evidenceImg.onerror=()=>updateDisplay();
+  function syncEvidenceImage(){
+    const thumb=$('evidenceThumb');
+    const ok=Boolean(state.evidenceImage);
+    thumb.hidden=!ok;$('removeEvidence').hidden=!ok;
+    $('evidenceStatus').textContent=ok?'Image attached · included in PNG and PDF':'No image attached';
+    if(ok){thumb.src=state.evidenceImage;if(evidenceImg.src!==state.evidenceImage)evidenceImg.src=state.evidenceImage;}
+    else {thumb.removeAttribute('src');evidenceImg.removeAttribute('src');}
+  }
+  async function imageToJpeg(file){
+    if(file.size>12*1024*1024)throw new Error('Choose an image under 12 MB.');
+    if(!['image/png','image/jpeg','image/webp','image/gif'].includes(file.type)) throw new Error('Please select a PNG, JPG, WEBP or GIF image.');
+    const sourceUrl=URL.createObjectURL(file);
+    try {
+      const img=new Image();
+      await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=()=>reject(new Error('Could not read image.'));img.src=sourceUrl;});
+      const ratio=Math.min(1,1400/Math.max(img.naturalWidth,img.naturalHeight));
+      const c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.naturalWidth*ratio));c.height=Math.max(1,Math.round(img.naturalHeight*ratio));
+      const ctx=c.getContext('2d');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,0,0,c.width,c.height);
+      let data=c.toDataURL('image/jpeg',0.85);
+      if(data.length>1800000){data=c.toDataURL('image/jpeg',0.66);}
+      if(data.length>1800000){
+        const small=document.createElement('canvas');
+        const factor=Math.min(1,900/Math.max(c.width,c.height));
+        small.width=Math.max(1,Math.round(c.width*factor));small.height=Math.max(1,Math.round(c.height*factor));
+        small.getContext('2d').drawImage(c,0,0,small.width,small.height);
+        data=small.toDataURL('image/jpeg',0.62);
+      }
+      if(data.length>2500000)throw new Error('The compressed image is too large. Please use a smaller photo.');
+      return data;
+    }finally{URL.revokeObjectURL(sourceUrl);}
+  }
+  $('evidenceFile').addEventListener('change',async e=>{
+    const file=e.target.files?.[0];if(!file)return;
+    try{state.evidenceImage=await imageToJpeg(file);syncEvidenceImage();safeSave();updateDisplay();notify('Image added to your Studio Card.');}
+    catch(err){notify(err.message||'Could not open image.');}
+    finally{e.target.value='';}
+  });
+  $('removeEvidence').addEventListener('click',()=>{state.evidenceImage='';syncEvidenceImage();safeSave();updateDisplay();notify('Attached image removed.');});
 
   function readState(){
-    return Object.fromEntries(FIELDS.map(k => [k, String(state[k] || '')]));
+    return {...Object.fromEntries(FIELDS.map(k => [k, String(state[k] || '')])), evidenceImage:state.evidenceImage, selectedActivities:[...state.selectedActivities]};
   }
   function updateForm(){
     for(const k of FIELDS) $(k).value = state[k];
-    updateDisplay();
+    document.querySelectorAll('input[name="selectedActivities"]').forEach(el => {el.checked = state.selectedActivities.includes(el.value);});
+    syncEvidenceImage();updateDisplay();
   }
   function safeLoad(){
     try {
@@ -199,23 +363,34 @@
       const parsed = JSON.parse(saved);
       const data = parsed && (parsed.data || parsed);
       for(const k of FIELDS) if(typeof data?.[k] === 'string') state[k] = data[k].slice(0, $(k).maxLength > 0 ? $(k).maxLength : 900);
+      if(Array.isArray(data?.selectedActivities)) state.selectedActivities = ACTIVITIES.filter(a => data.selectedActivities.includes(a.id)).map(a => a.id);
+      if(typeof data?.evidenceImage==='string' && /^data:image\/(?:jpeg|png|webp);base64,/.test(data.evidenceImage) && data.evidenceImage.length<3000000) state.evidenceImage=data.evidenceImage;
     } catch(e){console.warn('Local draft could not be loaded', e);}
   }
   function safeSave(){
-    try { localStorage.setItem(KEY, JSON.stringify({schemaVersion:1,data:readState()})); }
-    catch(e) { console.warn('Local draft unavailable',e); }
+    try { localStorage.setItem(KEY, JSON.stringify({schemaVersion:3,data:readState()})); }
+    catch(e) { console.warn('Local draft unavailable',e);notify('Browser storage is full or disabled. Please save a draft to keep your work.'); }
   }
   let toastTimer;
   function notify(message){
     const el = $('toast'); el.textContent = message; el.classList.add('show');
     clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 3800);
   }
+  function updateActivityGuidance(){
+    const selected = ACTIVITIES.filter(a => state.selectedActivities.includes(a.id));
+    const single = selected.length===1 ? selected[0] : null;
+    $('activityGuideTitle').textContent = single ? `${single.tag} · ${single.name}` : selected.length>1 ? `Connecting ${selected.length} activities` : 'Your reflection focus';
+    $('activityGuideText').textContent = single ? single.focus : selected.length>1 ? 'Bring your experiences together in one card. Look for connections, differences and transferable insights.' : 'Choose an activity above for prompts that connect directly to what you did today.';
+    const hints = single ? single.hints : selected.length>1 ? MULTI_HINTS : GENERAL_HINTS;
+    REFLECTIONS.forEach((key,i)=>{$('hint-'+key).textContent=hints[i];});
+  }
   function updateDisplay(){
+    updateActivityGuidance();
     const complete = REFLECTIONS.filter(k => state[k].trim().length > 0).length;
     $('progressLabel').textContent = `${complete} / 5`;
     $('progressTrack').setAttribute('aria-valuenow',String(complete));
     $('progressFill').style.width = `${complete*20}%`;
-    try {renderCard(card,1);}catch(e){console.error('Card preview failed',e);}
+    try {renderCard(card,1);$('canvasSize').textContent=`Export: 2400 × ${card.height*2} px`;}catch(e){console.error('Card preview failed',e);}
   }
   function fillRound(ctx,x,y,w,h,r,colour){
     ctx.fillStyle=colour; ctx.beginPath(); ctx.roundRect(x,y,w,h,r); ctx.fill();
@@ -280,9 +455,31 @@
       const height=Math.max(215,119+effectiveLines.length*lineHeight+29);
       return {s,content,lines:effectiveLines,height};
     });
-    const sectionTop=598, gap=15;
+    // Keep every selected activity readable on the PNG, even if students join all five.
+    measure.font=`700 18px ${FONT}`;
+    const chosen = ACTIVITIES.filter(a => state.selectedActivities.includes(a.id));
+    let chipRow=0,chipOffset=0;
+    const chips = chosen.map(a=>{
+      const width=Math.min(994,Math.ceil(measure.measureText(a.chip).width+43));
+      if(chipOffset>0 && chipOffset+width>1002){chipRow++;chipOffset=0;}
+      const chip={...a,width,x:98+chipOffset,y:625+chipRow*47};
+      chipOffset+=width+11;
+      return chip;
+    });
+    const chipRows=chosen.length ? chipRow+1 : 1;
+    const activityBlockY=577, activityBlockH=47+chipRows*47+22;
+    const sectionTop=activityBlockY+activityBlockH+29, gap=15;
     const rowsHeight=rows.reduce((sum,row)=>sum+row.height,0)+gap*(rows.length-1);
-    const H=sectionTop+rowsHeight+119;
+    const hasImage=Boolean(state.evidenceImage && evidenceImg.complete && evidenceImg.naturalWidth);
+    const hasEvidence=Boolean(state.evidence.trim() || state.evidenceUrl.trim() || state.evidenceImage);
+    measure.font=`400 23px ${FONT}`;
+    const evidenceLines=state.evidence.trim()?wrap(measure,state.evidence.trim(),925):[];
+    measure.font=`400 19px ${FONT}`;
+    const linkLines=state.evidenceUrl.trim()?wrap(measure,state.evidenceUrl.trim(),935):[];
+    const evidenceHeight=hasEvidence?95+evidenceLines.length*34+linkLines.length*29+(hasImage?365:0)+30:0;
+    const evidenceTop=sectionTop+rowsHeight+9;
+    const footY=evidenceTop+(hasEvidence?evidenceHeight+26:29);
+    const H=footY+117;
     canvas.width=Math.round(W*scale);canvas.height=Math.round(H*scale);
     const ctx=canvas.getContext('2d');
     ctx.scale(scale,scale);ctx.textBaseline='top';
@@ -301,19 +498,19 @@
     ctx.fillStyle='#d9ded6';ctx.fillRect(72,154,1056,2);
     drawLetterSpaced(ctx,'AN EXPERIMENTATION & REFLECTION RECORD',74,190,1.6,`700 15px ${FONT}`,'#596258');
     text(ctx,'Studio Card',68,225,`800 86px ${FONT}`,'#171916');
-    text(ctx,'An experiment worth remembering. A learning worth sharing.',74,333,`400 22px ${FONT}`,'#586157');
+    text(ctx,'How did making and testing change your thinking?',74,333,`400 22px ${FONT}`,'#586157');
 
     fillRound(ctx,72,393,1056,162,18,'#f0f2eb');
     strokeRound(ctx,72,393,1056,162,18,'#e6e9e0',1.4);
     // Session metadata, set as three equal-ish columns.
     drawLabel(ctx,'STUDENT',98,417);
-    drawLabel(ctx,'ACTIVITY / PROJECT',441,417);
+    drawLabel(ctx,'PROJECT / FOCUS',441,417);
     drawLabel(ctx,'DATE',957,417);
     ctx.fillStyle='#d6dcd2';ctx.fillRect(415,420,1,60);ctx.fillRect(930,420,1,60);
     ctx.font=`700 23px ${FONT}`;
     text(ctx,fitText(ctx,state.student || 'Not specified',287),98,449,`700 23px ${FONT}`,'#232823');
     ctx.font=`700 23px ${FONT}`;
-    text(ctx,fitText(ctx,state.activity || 'Untitled exploration',448),441,449,`700 23px ${FONT}`,'#232823');
+    text(ctx,fitText(ctx,state.activity || 'A PlayLab exploration',448),441,449,`700 23px ${FONT}`,'#232823');
     text(ctx,formatDate(state.date),957,449,`700 23px ${FONT}`,'#232823');
     ctx.fillStyle='#d6dcd2';ctx.fillRect(98,497,1002,1);
     drawLabel(ctx,'TOOLS / MATERIALS',98,516);
@@ -321,6 +518,18 @@
     const tools = state.tools.trim() || '—';
     text(ctx,fitText(ctx,tools,811),268,513,`500 17px ${FONT}`,'#566057');
 
+    fillRound(ctx,72,activityBlockY,1056,activityBlockH,17,'#f2f5ec');
+    strokeRound(ctx,72,activityBlockY,1056,activityBlockH,17,'#e4e9dd',1.4);
+    drawLabel(ctx,'TODAY’S STUDIO ACTIVITIES',98,activityBlockY+17);
+    if(!chips.length){
+      text(ctx,'Select the activity or activities you joined',99,625,`italic 19px ${FONT}`,'#859081');
+    } else {
+      for(const a of chips){
+        fillRound(ctx,a.x,a.y,a.width,36,10,a.colour);
+        ctx.font=`700 18px ${FONT}`;
+        text(ctx,a.chip,a.x+17,a.y+9,`700 18px ${FONT}`,'#293029');
+      }
+    }
     let y=sectionTop;
     rows.forEach(({s,content,lines,height},i)=>{
       fillRound(ctx,left,y,usable,height,20,'#ffffff');
@@ -337,10 +546,26 @@
       for(const line of lines){ctx.fillText(line,rowX,textY);textY+=lineSpacing;}
       y+=height+gap;
     });
-    const footY=sectionTop+rowsHeight+38;
+    if(hasEvidence){
+      fillRound(ctx,72,evidenceTop,1056,evidenceHeight,18,'#f2f6ed');
+      strokeRound(ctx,72,evidenceTop,1056,evidenceHeight,18,'#dfe8d9',1.4);
+      drawLetterSpaced(ctx,'OPTIONAL EVIDENCE / ARTEFACT',98,evidenceTop+27,1.2,`800 19px ${FONT}`,'#2f422e');
+      let ey=evidenceTop+71;
+      if(evidenceLines.length){for(const line of evidenceLines){text(ctx,line,101,ey,`400 23px ${FONT}`,'#2f3b2e');ey+=34;}ey+=7;}
+      if(linkLines.length){for(const line of linkLines){text(ctx,line,101,ey,`400 19px ${FONT}`,'#31618a');ey+=29;}ey+=7;}
+      if(hasImage){
+        const imgW=evidenceImg.naturalWidth,imgH=evidenceImg.naturalHeight;
+        const factor=Math.min(927/imgW,340/imgH);
+        const drawW=imgW*factor,drawH=imgH*factor;
+        ctx.fillStyle='#ffffff';ctx.fillRect(100,ey,927,346);
+        ctx.drawImage(evidenceImg,100+(927-drawW)/2,ey+(346-drawH)/2,drawW,drawH);
+        ctx.strokeStyle='#dce3d8';ctx.lineWidth=1;ctx.strokeRect(100,ey,927,346);
+      }
+    }
     ctx.fillStyle='#d9ded6';ctx.fillRect(72,footY,1056,2);
-    drawLetterSpaced(ctx,'EXPLORE   →   MAKE   →   REFLECT   →   ADAPT',74,footY+27,1.7,`700 13px ${FONT}`,'#455044');
-    drawLetterSpaced(ctx,'PLAYLAB  /  ACADEMYEX',892,footY+27,1.2,`700 12px ${FONT}`,'#778073');
+    drawLetterSpaced(ctx,'STUDIO ACTIVITY  →  REFLECTION  →  VISIBLE EVIDENCE',74,footY+23,1.3,`700 12px ${FONT}`,'#455044');
+    text(ctx,'Add this card to your Digital Portfolio as evidence of an experiment, iteration or shift in thinking.',74,footY+50,`400 17px ${FONT}`,'#596657');
+    drawLetterSpaced(ctx,'PLAYLAB  /  ACADEMYEX',892,footY+78,1.2,`700 12px ${FONT}`,'#778073');
     return {width:canvas.width,height:canvas.height};
   }
 
@@ -350,10 +575,14 @@
     window.setTimeout(()=>URL.revokeObjectURL(url),45000);
   }
   function fileBase(){
-    const s=(state.activity.trim()||state.student.trim()||'studio-card').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,45) || 'studio-card';
+    const s=(state.activity.trim()||state.selectedActivities.map(id=>ACTIVITIES.find(a=>a.id===id)?.tag).filter(Boolean).join('-')||state.student.trim()||'studio-card').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,45) || 'studio-card';
     return `playlab-${s}-${/^\d{4}-\d{2}-\d{2}$/.test(state.date)?state.date:today()}`;
   }
   function handleInput(e){
+    if(e.target.name==='selectedActivities'){
+      state.selectedActivities=ACTIVITIES.filter(a=>document.querySelector(`input[name="selectedActivities"][value="${a.id}"]`).checked).map(a=>a.id);
+      updateDisplay();safeSave();return;
+    }
     if(!FIELDS.includes(e.target.id))return;
     state[e.target.id]=e.target.value;
     updateDisplay();safeSave();
@@ -376,7 +605,7 @@
     }catch(err){console.error(err);btn.disabled=false;btn.innerHTML=label;notify('PNG export failed. Please try again.');}
   });
   $('saveJson').addEventListener('click',()=>{
-    const body={schemaVersion:1,format:'academyEX PlayLab Studio Card',savedAt:new Date().toISOString(),data:readState()};
+    const body={schemaVersion:3,format:'academyEX PlayLab Studio Card',savedAt:new Date().toISOString(),data:readState()};
     const blob=new Blob([JSON.stringify(body,null,2)],{type:'application/json;charset=utf-8'});
     downloadBlob(blob,fileBase()+'.json');notify('Editable draft saved as JSON.');
   });
@@ -384,14 +613,57 @@
   $('fileInput').addEventListener('change',async e=>{
     const file=e.target.files?.[0]; if(!file)return;
     try {
-      if(file.size>150000)throw new Error('File is too large');
+      if(file.size>3200000)throw new Error('File is too large');
       const parsed=JSON.parse(await file.text());
       const data=parsed?.data||parsed;
       if(!data || typeof data!=='object' || !FIELDS.some(k=>typeof data[k]==='string'))throw new Error('Not a Studio Card draft');
       for(const k of FIELDS){state[k]=typeof data[k]==='string' ? data[k].slice(0,$(k).maxLength > 0 ? $(k).maxLength : 900): k==='date'?today():'';}
+      state.selectedActivities=Array.isArray(data.selectedActivities) ? ACTIVITIES.filter(a=>data.selectedActivities.includes(a.id)).map(a=>a.id) : [];
+      state.evidenceImage=typeof data.evidenceImage==='string' && /^data:image\/(?:jpeg|png|webp);base64,/.test(data.evidenceImage) && data.evidenceImage.length<3000000 ? data.evidenceImage : '';
       updateForm();safeSave();notify('Draft opened successfully.');
     }catch(err){console.warn(err);notify('Could not open this draft. Please choose a Studio Card JSON file.');}
     finally{e.target.value='';}
+  });
+  function markdownEscape(str){return String(str||'').replace(/\r/g,'').trim();}
+  function exportMarkdown(){
+    const a=ACTIVITIES.filter(a=>state.selectedActivities.includes(a.id)).map(a=>`- ${a.tag}: ${a.name}`).join('\n')||'- None selected';
+    const sections=SECTIONS.map(s=>`## ${s.title.replace('WHAT SURPRISED ME / WHAT I NOTICED','WHAT SURPRISED ME OR WHAT I NOTICED')}\n\n${markdownEscape(state[s.key])||'_Not completed_'}\n`).join('\n');
+    const evidence=[state.evidence.trim()||'',state.evidenceUrl.trim()||'',state.evidenceImage?'[Image attached to visual Studio Card; export PNG or PDF to include it.]':''].filter(Boolean).join('\n\n');
+    const md=`# PlayLab Studio Card\n\n*How did making and testing change your thinking?*\n\n**Student:** ${state.student||'Not specified'}  \n**Date:** ${formatDate(state.date)}  \n**Project / focus:** ${state.activity||'A PlayLab exploration'}  \n**Tools / materials:** ${state.tools||'Not specified'}\n\n## Studio activities\n\n${a}\n\n${sections}## Evidence / artefact (optional)\n\n${evidence||'_None added_'}\n\n---\n\n**Digital Portfolio:** Keep this card as evidence of an experiment, iteration or shift in thinking.\n`;
+    downloadBlob(new Blob([md],{type:'text/markdown;charset=utf-8'}),fileBase()+'.md');notify('Searchable, editable text exported.');
+  }
+  function printElement(tag,cls,txt,parent){const el=document.createElement(tag);if(cls)el.className=cls;if(txt!=null)el.textContent=txt;(parent||$('printSheet')).appendChild(el);return el;}
+  function buildPrintSheet(){
+    const sheet=$('printSheet');sheet.replaceChildren();
+    const header=printElement('header','print-head','',sheet);
+    const brand=printElement('div','print-kicker','FUTURES PLAYLAB\nLEARNING THROUGH MAKING',header);brand.style.whiteSpace='pre-line';
+    const img=printElement('img','print-logo',null,header);img.src=LOGO_SRC;img.alt='academyEX';
+    printElement('h1','print-title','Studio Card',sheet);
+    printElement('p','print-sub','How did making and testing change your thinking?',sheet);
+    const meta=printElement('div','print-meta','',sheet);
+    for(const [label,val] of [['Student',state.student||'Not specified'],['Date',formatDate(state.date)],['Project / focus',state.activity||'A PlayLab exploration'],['Tools / materials',state.tools||'—']]){
+      const p=printElement('p',null,null,meta);printElement('span','print-label',label+': ',p);p.appendChild(document.createTextNode(val));
+    }
+    const a=ACTIVITIES.filter(a=>state.selectedActivities.includes(a.id));
+    const section=printElement('section','print-section','',sheet);printElement('h2',null,'Studio activities',section);printElement('p',null,a.length?a.map(x=>`${x.tag}: ${x.name}`).join(' · '):'No activity selected',section);
+    SECTIONS.forEach(s=>{const sec=printElement('section','print-section','',sheet);printElement('h2',null,s.title,sec);printElement('p',null,state[s.key].trim()||'—',sec);});
+    if(state.evidence.trim()||state.evidenceUrl.trim()||state.evidenceImage){
+      const sec=printElement('section','print-section print-evidence','',sheet);printElement('h2',null,'Evidence / artefact (optional)',sec);
+      if(state.evidence.trim())printElement('p',null,state.evidence.trim(),sec);
+      if(state.evidenceUrl.trim()){
+        const p=printElement('p',null,'',sec),safeUrl=normalUrl(state.evidenceUrl);
+        if(safeUrl){const link=printElement('a',null,state.evidenceUrl.trim(),p);link.href=safeUrl;}
+        else p.textContent=state.evidenceUrl.trim();
+      }
+      if(state.evidenceImage){const i=printElement('img',null,null,sec);i.src=state.evidenceImage;i.alt='Evidence image';}
+    }
+    printElement('div','print-portfolio','Digital Portfolio · Save this card as evidence of an experiment, an iteration or a shift in thinking.',sheet);
+  }
+  function normalUrl(s){try{const u=new URL(s.trim());return ['https:','http:'].includes(u.protocol)?u.href:null;}catch{return null;}}
+  $('downloadMd').addEventListener('click',exportMarkdown);
+  $('downloadPdf').addEventListener('click',()=>{
+    buildPrintSheet();notify('In the print dialog, select “Save as PDF”. The text will remain searchable.');
+    window.print();
   });
   $('clearForm').addEventListener('click',()=>{
     if(!window.confirm('Clear this Studio Card? This will replace the draft saved in this browser. Save a JSON backup first if you want to keep it.'))return;
@@ -400,10 +672,7 @@
   logo.onload=()=>renderCard(card,1);
   logo.onerror=()=>renderCard(card,1);
   safeLoad();updateForm();
-  // Reflect the current pixel height in the visible preview metadata.
-  const originalUpdate=updateDisplay;
-  updateDisplay=function(){originalUpdate();$('canvasSize').textContent=`Export: ${2400} × ${card.height*2} px`;};
-  updateDisplay();
+
 })();
 </script>
 </body>
