@@ -1,58 +1,58 @@
 # PlayLab Studio Card — academyEX
 
-**Version 1.2 · Futures PlayLab**
+**Version 1.4 · For the full learning journey**
 
-A self-contained, accessible, mobile-friendly web tool that helps academyEX learners make studio learning visible. The goal is not simply to document an activity, but to **capture how thinking changes through making, testing and reflection**.
+A lightweight, self-contained reflection tool for Futures PlayLab. Students use it whenever an activity, project, experiment or learning experience changes their thinking — not just for a particular workshop or day.
 
-**Learning flow:** Studio activity → reflection → visible evidence → Digital Portfolio.
+**Learning flow:** Learning experience → reflection → visible evidence → Digital Portfolio.
 
-## Student experience
+## What changed in v1.4
 
-1. Select one or more MAKE / EXPLORE activities from the workshop. Relevant hints appear beneath the five questions.
-2. Optionally add your name, date, project focus and tools.
-3. Complete **one Studio Card** with the same five reflections for everyone:
-   - What did you explore?
-   - What did you make or test?
-   - What surprised you **or what did you notice**?
-   - What changed? (especially in your thinking or assumptions)
-   - What would you do next?
-4. **Optional evidence:** Describe an artefact or local file, paste a prototype/file URL, and/or attach one photo, screenshot or sketch. Uploaded images appear on the exported card. No extra reflection questions are required.
-5. Export the card and add it to your **Digital Portfolio** as evidence of an experiment, iteration or shift in thinking.
+The previous **“Activities from today”** checkbox list has been replaced with a single free-text field: **“Activity or learning experience.”** Students can describe any workshop, class activity, independent project, experiment, feedback session or iteration. This description appears in the Studio Card preview and in every export.
 
-### Workshop activities
+The five core reflections remain unchanged:
 
-- **MAKE 1 — System → Intervention:** Map a real context/system, identify a relationship or friction point, create a low-fi intervention.
-- **MAKE 2 — Cybernetic / Adaptive Redesign:** Analyse feedback, control and system response, adapt the intervention into V2.
-- **MAKE 3 — PlayLab Google Site Challenge:** Redesign part of the digital PlayLab home for participation, exploration and contribution.
-- **EXPLORE 1 — Collective Frame VR:** Explore shared spatial experience through a 4E+/enaction lens.
-- **EXPLORE 2 — VR Headsets:** Experience VR affordances, movement and interaction.
+1. What did you explore?
+2. What did you make or test?
+3. What surprised you or what did you notice?
+4. What changed?
+5. What would you do next?
 
-## Export options
+The questions are general-purpose; guidance no longer depends on selected workshop activities. The project/focus, date and tools fields still provide context. An optional photo, screenshot, sketch, artefact reference or URL can be added as evidence. The Digital Portfolio connection is explicit.
 
-| Option | What it does | Best for |
-|---|---|---|
-| **Download PNG card** | Creates a high-resolution, academyEX-branded image. The canvas grows to accommodate longer answers and optional evidence images. | Visual Digital Portfolio entries, sharing and presentation |
-| **Save as PDF** | Opens your browser's print dialog with a clean, print-optimised document; choose **Save as PDF**. Text remains selectable/searchable and images are included. | Searchable portfolio archives and assessment records |
-| **Download text (.md)** | Saves the card's written content and any evidence reference/URL as Markdown text. Embedded images are *not* carried into this text file. | Copying, editing and searching reflection text |
-| **Save draft / Open draft** | Downloads or imports a JSON file with all current fields, selected activities and any compressed evidence image. | Returning to unfinished cards or moving devices |
+### Export and draft options
 
-**Tip:** PDF is created through your browser's built-in *Print → Save as PDF* option. No third-party PDF service or account is involved.
+| Action | Result |
+|---|---|
+| **Download PNG card** | High-resolution image with branding, activity description, five reflections and optional evidence |
+| **Save as PDF** | Browser print-to-PDF with branded, colour card styling and **searchable/selectable text** |
+| **Download text (.md)** | Editable Markdown containing the activity description, responses and evidence references |
+| **Save draft / Open draft** | Portable JSON file for returning to an unfinished card, including an attached compressed image if present |
+
+A current draft is also kept in this browser’s local storage when that feature is available. For important work, use **Save draft** before leaving the page. The draft storage key is unchanged from earlier versions.
+
+### Compatibility with earlier cards
+
+Students can import JSON drafts created with versions 1.1–1.3. Existing selected MAKE/EXPLORE activities are **converted to a readable activity description** in the new free-text field. The earlier reflections, student information, date, project focus, tools and evidence are retained. The same conversion happens for a previously saved draft in browser local storage on upgrade.
 
 ## Publish to GitHub Pages
 
-1. Create a public repository, e.g. `playlab-studio-card`.
-2. Upload `index.html` to the repository root (and optionally this README).
-3. Under **Settings → Pages**, choose **Deploy from a branch**; select `main` and `/ (root)`.
-4. Open the URL GitHub displays, typically `https://YOUR-USERNAME.github.io/playlab-studio-card/`.
+1. Create or open the GitHub repository for the Studio Card.
+2. Upload or replace `index.html` in the repository root.
+3. Go to **Settings → Pages** and set **Deploy from a branch**, `main`, and `/ (root)`.
+4. Visit the GitHub Pages address shown in repository settings.
 
-To upgrade an existing v1.0 or v1.1 deployment, **replace the old `index.html` with the new one**. Existing locally stored text and activity selections are retained where they exist. Old JSON drafts also remain importable.
+For an existing site, **replace only `index.html`**. The site requires no build, bundler, account, API, external scripts or separate logo files.
 
-## Privacy and technical details
+## Notes on privacy and exporting
 
-- This is a static HTML/CSS/JavaScript app. There are no external libraries, fonts, CDN requests, API keys, analytics or databases.
-- No student content, photos or URLs are uploaded by this website. Responses and image data are processed locally on the device.
-- Data is stored in browser `localStorage` when available. Storage can be cleared by the browser or blocked, so **Save draft** is recommended for important work.
-- Uploaded images are converted to a smaller JPEG in the browser (one image per card) for reliable PNG, PDF and JSON exports. Animated GIFs are captured as a single frame.
-- PDF text is rendered as real HTML text, not as an image. PDF printing depends on the browser; the student chooses the final save destination.
-- Exports are local files only. Students must upload their Studio Card to their own Digital Portfolio; the tool does not upload it automatically.
-- `index.html` is the entire deployable website; the original academyEX landscape logo is embedded in it.
+- All student data, images and exports are processed on the student's device. The site itself does **not** transmit submissions to academyEX or automatically upload to a Digital Portfolio.
+- The academyEX landscape logo is embedded directly in `index.html`.
+- Image evidence is compressed locally for reliable preview, PNG/PDF export and JSON draft saving.
+- Students should choose **Save as PDF** in the browser print dialog. For browsers that show extra URL/date headers or omit backgrounds, disable **Headers and footers** and enable **Background graphics**.
+- PDFs are generated from print-only HTML text, not by converting a screenshot. This keeps the body text searchable.
+- On cards with very long reflections or large evidence, a multi-page PDF is expected.
+
+## Verification
+
+Checks completed in headless Chromium against the self-contained HTML: responsive layout, new activity entry, live preview, PNG and Markdown downloads, JSON export/import, legacy draft migration, PDF print DOM and searchable PDF text. A typical filled card exports as one A4 PDF page. Browser navigation and persistence cannot be tested against a hosted GitHub Pages origin in this sandbox; publishing and cross-browser checks should still be done on the live site.
