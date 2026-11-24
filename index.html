@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#171916">
-  <meta name="description" content="Create a PlayLab Studio Card to capture what you explored, tested, discovered and want to try next. Export your Studio Card as a PNG, searchable PDF or editable text—directly from your browser.">
-  <title>PlayLab Studio Card | academyEX</title>
+  <meta name="description" content="Create a Futures PlayLab Studio Card to capture what you explored, tested, discovered and want to try next. Export your Studio Card as a PNG, searchable PDF or editable text—directly from your browser.">
+  <title>Futures PlayLab Studio Card | academyEX</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23171916'/%3E%3Cpath d='M13 13h38v11H24v27H13z' fill='%23e5f48a'/%3E%3Ccircle cx='42' cy='42' r='10' fill='white'/%3E%3C/svg%3E">
   <style>
     :root {
@@ -236,7 +236,7 @@
     </section>
     <aside class="preview-panel" aria-labelledby="previewHeading">
       <div class="preview-head"><div><div class="section-label">See it come together</div><h2 id="previewHeading">Live card preview</h2><small>Updates automatically as you write</small></div><span class="preview-tag">PORTFOLIO READY</span></div>
-      <div class="canvas-wrap"><canvas id="cardCanvas" width="1200" height="1750" role="img" aria-label="Preview of your PlayLab Studio Card">Your browser does not support the card preview. Please use an up-to-date browser.</canvas></div>
+      <div class="canvas-wrap"><canvas id="cardCanvas" width="1200" height="1750" role="img" aria-label="Preview of your Futures PlayLab Studio Card">Your browser does not support the card preview. Please use an up-to-date browser.</canvas></div>
       <div class="preview-actions">
         <button type="button" class="btn btn-dark btn-download" id="downloadPng"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 16v4h16v-4"/></svg> Download PNG card</button>
         <div class="export-secondary"><button type="button" class="btn" id="downloadPdf" title="Print the colour Studio Card as a PDF with searchable text">Save as PDF</button><button type="button" class="btn" id="downloadMd" title="Download editable searchable text for your Digital Portfolio">Download text (.md)</button></div>
@@ -245,9 +245,9 @@
       <div class="tip"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/></svg><span><strong>Digital Portfolio:</strong> Add your card as evidence of an experiment, iteration or shift in thinking. PNG preserves the visual card; PDF and Markdown keep the reflection text searchable and reusable.</span></div>
     </aside>
   </div>
-  <footer class="site-foot"><span>PlayLab Studio Card · A space for exploring, making and learning.</span><span>Made for learning. Built to share.</span></footer>
+  <footer class="site-foot"><span>Futures PlayLab Studio Card · A space for exploring, making and learning.</span><span>Made for learning. Built to share.</span></footer>
  </main>
-<article id="printSheet" aria-label="Printable PlayLab Studio Card"></article>
+<article id="printSheet" aria-label="Printable Futures PlayLab Studio Card"></article>
 <div role="status" aria-live="polite" id="toast" class="toast"></div>
 <script>
 'use strict';
@@ -278,7 +278,7 @@
   const LEGACY_ACTIVITIES = [
     ['make1','MAKE 1 — System → Intervention'],
     ['make2','MAKE 2 — Cybernetic / Adaptive Redesign'],
-    ['make3','MAKE 3 — PlayLab Google Site Challenge'],
+    ['make3','MAKE 3 — Futures PlayLab Google Site Challenge'],
     ['explore1','EXPLORE 1 — Collective Frame VR'],
     ['explore2','EXPLORE 2 — VR Headsets']
   ];
@@ -564,7 +564,7 @@
     }catch(err){console.error(err);btn.disabled=false;btn.innerHTML=label;notify('PNG export failed. Please try again.');}
   });
   $('saveJson').addEventListener('click',()=>{
-    const body={schemaVersion:4,format:'academyEX PlayLab Studio Card',savedAt:new Date().toISOString(),data:readState()};
+    const body={schemaVersion:4,format:'academyEX Futures PlayLab Studio Card',savedAt:new Date().toISOString(),data:readState()};
     const blob=new Blob([JSON.stringify(body,null,2)],{type:'application/json;charset=utf-8'});
     downloadBlob(blob,fileBase()+'.json');notify('Editable draft saved as JSON.');
   });
@@ -588,7 +588,7 @@
     const learningActivity = state.learningActivity.trim() || '_Not specified_';
     const sections=SECTIONS.map(s=>`## ${s.title.replace('WHAT SURPRISED ME / WHAT I NOTICED','WHAT SURPRISED ME OR WHAT I NOTICED')}\n\n${markdownEscape(state[s.key])||'_Not completed_'}\n`).join('\n');
     const evidence=[state.evidence.trim()||'',state.evidenceUrl.trim()||'',state.evidenceImage?'[Image attached to visual Studio Card; export PNG or PDF to include it.]':''].filter(Boolean).join('\n\n');
-    const md=`# PlayLab Studio Card\n\n*How did making and testing change your thinking?*\n\n**Student:** ${state.student||'Not specified'}  \n**Date:** ${formatDate(state.date)}  \n**Project / focus:** ${state.activity||'A learning project'}  \n**Tools / materials:** ${state.tools||'Not specified'}\n\n## Activity / learning experience\n\n${learningActivity}\n\n${sections}## Evidence / artefact (optional)\n\n${evidence||'_None added_'}\n\n---\n\n**Digital Portfolio:** Keep this card as evidence of an experiment, iteration or shift in thinking.\n`;
+    const md=`# Futures PlayLab Studio Card\n\n*How did making and testing change your thinking?*\n\n**Student:** ${state.student||'Not specified'}  \n**Date:** ${formatDate(state.date)}  \n**Project / focus:** ${state.activity||'A learning project'}  \n**Tools / materials:** ${state.tools||'Not specified'}\n\n## Activity / learning experience\n\n${learningActivity}\n\n${sections}## Evidence / artefact (optional)\n\n${evidence||'_None added_'}\n\n---\n\n**Digital Portfolio:** Keep this card as evidence of an experiment, iteration or shift in thinking.\n`;
     downloadBlob(new Blob([md],{type:'text/markdown;charset=utf-8'}),fileBase()+'.md');notify('Searchable, editable text exported.');
   }
   function printElement(tag,cls,txt,parent){const el=document.createElement(tag);if(cls)el.className=cls;if(txt!=null)el.textContent=txt;(parent||$('printSheet')).appendChild(el);return el;}
@@ -668,7 +668,18 @@
   });
   logo.onload=()=>renderCard(card,1);
   logo.onerror=()=>renderCard(card,1);
-  safeLoad();updateForm();
+  // A link can suggest a tool, e.g. index.html?tools=Ripple%20Map (used by the Futures PlayLab Play page).
+  // It only adds the tool name; it never replaces anything a student has written.
+  function prefillFromLink(){
+    try {
+      const want = (new URLSearchParams(location.search).get('tools') || '').trim().slice(0, 80);
+      if(!want) return;
+      const have = String(state.tools || '').trim();
+      if(!have) state.tools = want;
+      else if(!have.toLowerCase().includes(want.toLowerCase())) state.tools = (have + ', ' + want).slice(0, $('tools').maxLength > 0 ? $('tools').maxLength : 140);
+    } catch(e){}
+  }
+  safeLoad();prefillFromLink();updateForm();
 
 })();
 </script>
